@@ -2,11 +2,7 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, ArrowRight } from "lucide-react";
 
 const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Our Office",
-    lines: ["24 Carrier Court", "Southington, CT 06489"],
-  },
+  
   {
     icon: Phone,
     title: "Phone",
@@ -19,11 +15,7 @@ const contactInfo = [
     lines: ["support@seekdigitalsolutions.com"],
     link: "mailto:support@seekdigitalsolutions.com",
   },
-  {
-    icon: Clock,
-    title: "Business Hours",
-    lines: ["Mon – Fri: 9:00 AM – 6:00 PM CST", "Sat – Sun: Closed"],
-  },
+  
 ];
 
 const services = [

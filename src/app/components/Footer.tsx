@@ -81,10 +81,10 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-5" style={{ fontSize: "15px" }}>Get in Touch</h3>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
+              {/* <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#E85D26] mt-0.5 shrink-0" />
                 <span className="text-gray-400 text-sm">24 Carrier Court<br />Southington, CT 06489</span>
-              </li>
+              </li> */}
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#E85D26] shrink-0" />
                 <a href="tel:+18602658630" className="text-gray-400 text-sm hover:text-[#E85D26] transition-colors">
