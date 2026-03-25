@@ -1,7 +1,7 @@
 
-  # Follow File Directions
+  # Seek Digital Solutions
 
-  This is a code bundle for Follow File Directions. The original project is available at https://www.figma.com/design/kSETAToJ7oY383RaZoXsjk/Follow-File-Directions.
+  This is a code bundle for Seek Digital Solutions. The original project is available at https://www.figma.com/design/kSETAToJ7oY383RaZoXsjk/Seek-Digital-Solutions.
 
   ## Running the code
 
