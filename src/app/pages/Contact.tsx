@@ -36,6 +36,12 @@ const services = [
   "Other / Not Sure",
 ];
 
+// Google Apps Script web-app URL — appends each submission as a row in the
+// Seek Digital Solutions contact sheet. This is a public POST endpoint; no
+// secret is exposed by keeping it in source.
+const SHEETS_WEBHOOK_URL =
+  "https://script.google.com/a/macros/seekdigitalsolutions.com/s/AKfycbz3KTWvQ8_IDPzTagDuHD4fPvzMgvpPYZEPGRXhduTxHAZS2PXZkMvbOC9KSK-eWAjw/exec";
+
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -83,35 +89,58 @@ export function Contact() {
     setSubmitting(true);
     setSubmitError("");
 
-    // Encode form data as application/x-www-form-urlencoded for Netlify Forms.
-    // Netlify detects the form at build time via /public/netlify-forms.html
-    // and accepts POST submissions to "/" at runtime.
+    // Encode form data as application/x-www-form-urlencoded.
+    // Used for both the Netlify Forms POST and the Google Sheets Apps Script POST.
+    // Netlify detects the form at build time via /public/netlify-forms.html.
     const encode = (data: Record<string, string>) =>
       Object.entries(data)
         .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
         .join("&");
 
+    const netlifyPayload = encode({
+      "form-name": "contact",
+      "bot-field": "",
+      ...formData,
+    });
+
     try {
+      // ── Step 1: Submit to Netlify Forms ─────────────────────────────────────
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({
-          "form-name": "contact",
-          "bot-field": "",
-          ...formData,
-        }),
+        body: netlifyPayload,
       });
 
       if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(`Netlify Forms responded with ${response.status}`);
       }
+
+      // ── Step 2: Mirror row to Google Sheets (fire-and-forget) ───────────────
+      // mode: "no-cors" avoids a CORS preflight; the response is opaque but
+      // the POST still reaches Apps Script and appends the row to the sheet.
+      fetch(SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ ...formData }),
+      }).catch(() => {
+        // Silently swallow — Sheets logging is best-effort and should never
+        // block the user-facing success state.
+      });
 
       setSubmitted(true);
     } catch (err) {
-      // In local dev the POST will 404 (no Netlify runtime), but the form
-      // still works correctly once deployed. Show a friendly dev-mode notice.
+      // In local dev the Netlify POST will 404 (no runtime), but the form works
+      // correctly once deployed. Simulate success so the UI is testable locally.
       if (import.meta.env.DEV) {
-        setSubmitted(true); // simulate success in preview
+        // Still fire the Sheets webhook in dev so you can test it end-to-end.
+        fetch(SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encode({ ...formData }),
+        }).catch(() => {});
+        setSubmitted(true);
       } else {
         setSubmitError(
           "Something went wrong sending your message. Please try calling us directly at (860) 265-8630."
