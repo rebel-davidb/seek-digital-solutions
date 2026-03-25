@@ -81,7 +81,7 @@ However, no method of internet transmission or electronic storage is 100% secure
     title: "9. Contact Us",
     content: `If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
-• **Email:** privacy@seekdigitalsolutions.com
+• **Email:** support@seekdigitalsolutions.com
 • **Phone:** (860) 265-8630
 • **Mail:** Seek Digital Solutions, 24 Carrier Court, Southington, CT 06489
 
