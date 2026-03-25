@@ -197,13 +197,7 @@ export function Contact() {
               ))}
             </div>
 
-            {/* Map Placeholder */}
-            <div className="rounded-2xl overflow-hidden border border-gray-200 h-52 bg-gray-100 flex items-center justify-center">
-              <div className="text-center text-gray-400">
-                <MapPin className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">Map · Southington, CT</p>
-              </div>
-            </div>
+            
           </aside>
 
           {/* Contact Form */}
